@@ -53,6 +53,7 @@ const Navbar = (props) => (
         anchorEl={props.anchorEl}
         open={Boolean(props.anchorEl)}
         onClose={props.handleClose}
+        style={{ top: 50 }}
       >
         <MenuItem onClick={props.handleClose}>
           <ListItemIcon>
