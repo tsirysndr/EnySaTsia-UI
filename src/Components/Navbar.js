@@ -1,9 +1,19 @@
 import React from 'react'
 import { StatefulInput } from 'baseui/input'
-import { Button, KIND } from 'baseui/button'
+import { Button } from 'baseui/button'
 import { StyledLink } from 'baseui/link'
 import { withRouter } from 'react-router-dom'
+import { compose, getContext } from 'recompose'
+import { withPopoverHandler, withGenerateDefaultAddress } from './Enhancers/NavbarEnhancer'
 import avatar from 'gradient-avatar'
+import PropTypes from 'prop-types'
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import AccountCircle from '@material-ui/icons/AccountCircleOutlined'
+import Settings from '@material-ui/icons/Settings'
+import ExitToApp from '@material-ui/icons/ExitToApp'
+import Typography from '@material-ui/core/Typography'
 
 const a = avatar('tsiry')
 const avatarIcon = `data:image/svg+xml;charset=utf-8,${a}`
@@ -36,11 +46,53 @@ const Navbar = (props) => (
     </div>
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
       <div style={{ padding: 10, marginLeft: 25 }}>
-        <img style={{cursor: 'pointer', width: 40, height: 40, borderRadius: 20 }} alt='' src={avatarIcon} />
+        <img onClick={props.handleOpen} style={{cursor: 'pointer', width: 40, height: 40, borderRadius: 20 }} alt='' src={avatarIcon} />
       </div>
+      <Menu
+        id="simple-menu"
+        anchorEl={props.anchorEl}
+        open={Boolean(props.anchorEl)}
+        onClose={props.handleClose}
+      >
+        <MenuItem onClick={props.handleClose}>
+          <ListItemIcon>
+            <AccountCircle />
+          </ListItemIcon>
+          <Typography variant="inherit">
+            Profil
+          </Typography>
+        </MenuItem>
+        <MenuItem onClick={props.handleClose}>
+          <ListItemIcon>
+            <Settings />
+          </ListItemIcon>
+          <Typography variant="inherit">
+            Paramètres
+          </Typography>
+        </MenuItem>
+        <MenuItem onClick={props.handleClose}>
+          <ListItemIcon>
+            <ExitToApp />
+          </ListItemIcon>
+          <Typography variant="inherit">
+            Se déconnecter
+          </Typography>
+        </MenuItem>
+      </Menu>
     </div>
     <div style={{ flex: 0.2 }}></div>
   </div>
 )
 
-export default withRouter(Navbar)
+const withExtra = getContext({
+  extra: PropTypes.object,
+})
+
+const withData = compose(
+  withExtra,
+  withRouter,
+  withPopoverHandler,
+  withGenerateDefaultAddress,
+)
+
+export default withData(Navbar)

@@ -17,6 +17,9 @@ import createStore from './Redux'
 import ApolloClient from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
+import { wm } from './web3Provider'
+import { withContext } from 'recompose'
+import PropTypes from 'prop-types'
 import Home from './Containers/Home'
 import NewQuestion from './Containers/NewQuestion'
 
@@ -40,8 +43,15 @@ const theme = createTheme(
 
 const engine = new Styletron()
 
+const provide = extra => withContext(
+  { extra: PropTypes.object },
+  () => ({ extra })
+)
+
+const Provider = provide({ wm })(DrizzleProvider)
+
 ReactDOM.render(
-  <DrizzleProvider options={drizzleOptions} store={store}>
+  <Provider options={drizzleOptions} store={store}>
     <StyletronProvider value={engine}>
       <ThemeProvider theme={theme}>
         <HashRouter hashType='hashbang'>
@@ -52,7 +62,7 @@ ReactDOM.render(
         </HashRouter>
       </ThemeProvider>
     </StyletronProvider>
-  </DrizzleProvider>, 
+  </Provider>, 
   document.getElementById('root')
 )
 

@@ -2,7 +2,7 @@ import React from 'react'
 import MdButton from 'muicss/lib/react/button'
 import avatar from 'gradient-avatar'
 import { MdMoreHoriz, MdCheck } from 'react-icons/md'
-import { compose } from 'recompose'
+import { compose, getContext } from 'recompose'
 import { 
   withAnswer, 
   withAnswered,
@@ -10,6 +10,7 @@ import {
   withAnswers,
 } from './Enhancers/QuestionEnhancer'
 import Chart from './Chart'
+import PropTypes from 'prop-types'
 
 const a = avatar('tsiry')
 const avatarIcon = `data:image/svg+xml;charset=utf-8,${a}`
@@ -85,7 +86,12 @@ const Question = (props) => (
   </div>
 )
 
+const withDrizzle = getContext({
+  drizzle: PropTypes.object
+})
+
 const withData = compose(
+  withDrizzle,
   withAnswer,
   withAnswered,
   withSubmitted,
