@@ -35,3 +35,8 @@ code {
 .input-container > div > div {
   box-shadow: none !important;
 }
+
+button:focus, button:active {
+  outline: none !important;
+  box-shadow: none !important;
+}

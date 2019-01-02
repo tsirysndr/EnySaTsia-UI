@@ -5,6 +5,7 @@ import rootSaga from '../Sagas'
 
 /* ------------- Assemble The Reducers ------------- */
 export const reducers = combineReducers({
+  session: require('./SessionRedux').reducer,
   ...drizzleReducers,
 })
 

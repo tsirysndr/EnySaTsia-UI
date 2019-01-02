@@ -4,11 +4,13 @@ import { Container } from 'reactstrap'
 import avatar from 'gradient-avatar'
 import ContentLoader from 'react-content-loader'
 import { compose, getContext } from 'recompose'
-import { withAddress } from './Enhancers/ProfileEnhancer'
+import { withAddress, withUser } from './Enhancers/ProfileEnhancer'
 import PropTypes from 'prop-types'
+import base64 from 'base64-js'
+import { drizzleConnect as connect } from 'drizzle-react'
 
-const a = avatar('tsiry')
-const avatarIcon = `data:image/svg+xml;charset=utf-8,${a}`
+const a = base64.fromByteArray(Buffer.from(avatar('tsiry'), 'utf8'))
+const avatarIcon = `data:image/svg+xml;base64,${a}`
 
 const Profile = (props) => (
   <div>
@@ -21,7 +23,7 @@ const Profile = (props) => (
           </div>
           <div style={{ marginTop: 34 }}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <h4>Tsiry Sandratraina</h4>
+              <h4>{props.user.name}</h4>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
               <div style={{ width: 150, textOverflow: 'ellipsis', overflow: 'hidden' }}>
@@ -91,13 +93,25 @@ const Profile = (props) => (
   </div>
 )
 
-const withExtra = getContext({
-  extra: PropTypes.object,
+const withDrizzle = getContext({
+  drizzle: PropTypes.object
 })
 
 const withData = compose(
-  withExtra,
+  withDrizzle,
   withAddress,
+  withUser,
 )
 
-export default withData(Profile)
+const mapStateToProps = (state) => {
+  return {
+    accounts: state.accounts
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  }
+}
+
+export default connect(withData(Profile), mapStateToProps, mapDispatchToProps) 

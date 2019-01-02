@@ -11,9 +11,10 @@ import {
 } from './Enhancers/QuestionEnhancer'
 import Chart from './Chart'
 import PropTypes from 'prop-types'
+import base64 from 'base64-js'
 
-const a = avatar('tsiry')
-const avatarIcon = `data:image/svg+xml;charset=utf-8,${a}`
+const a = base64.fromByteArray(Buffer.from(avatar('tsiry'), 'utf8'))
+const avatarIcon = `data:image/svg+xml;base64,${a}`
 
 const Question = (props) => (
   <div>

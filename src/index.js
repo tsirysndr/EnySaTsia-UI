@@ -17,13 +17,13 @@ import createStore from './Redux'
 import ApolloClient from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
-import { wm } from './web3Provider'
 import { withContext } from 'recompose'
 import PropTypes from 'prop-types'
 import Home from './Containers/Home'
 import NewQuestion from './Containers/NewQuestion'
 import Profile from './Containers/Profile'
 import Settings from './Containers/Settings'
+import Signin from './Containers/Signin'
 
 require('typeface-montserrat')
 
@@ -45,15 +45,8 @@ const theme = createTheme(
 
 const engine = new Styletron()
 
-const provide = extra => withContext(
-  { extra: PropTypes.object },
-  () => ({ extra })
-)
-
-const Provider = provide({ wm })(DrizzleProvider)
-
 ReactDOM.render(
-  <Provider options={drizzleOptions} store={store}>
+  <DrizzleProvider options={drizzleOptions} store={store}>
     <StyletronProvider value={engine}>
       <ThemeProvider theme={theme}>
         <HashRouter hashType='hashbang'>
@@ -62,11 +55,12 @@ ReactDOM.render(
             <Route path='/post' component={NewQuestion} />
             <Route path='/profile' component={Profile} />
             <Route path='/settings' component={Settings} />
+            <Route path='/login' component={Signin} />
           </Switch>
         </HashRouter>
       </ThemeProvider>
     </StyletronProvider>
-  </Provider>, 
+  </DrizzleProvider>, 
   document.getElementById('root')
 )
 

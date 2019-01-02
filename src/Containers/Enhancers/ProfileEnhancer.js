@@ -3,19 +3,18 @@ import {
   withState,
   withPropsOnChange,
 } from 'recompose'
-import { Observable } from 'rxjs/Rx'
+import Box from '3box'
 
-export const withAddress = compose(
-  withState('address', 'setAddress', ''),
-  withPropsOnChange(
-    ['extra'],
-    props => {
-      const { wm } = props.extra
-      Observable.of(1).delay(200).subscribe(() => {
-        wm.getAccounts().then(accounts => {
-          props.setAddress(accounts[0])
-        })
-      })
-    }
-  )
+export const withAddress = withPropsOnChange(
+  ['accounts'],
+  props => ({
+    address: props.accounts[0]   
+  })
+)
+
+export const withUser = compose(
+  withState('user', 'setUser', ''),
+  withPropsOnChange(['accounts'], props => {
+    Box.getProfile(props.accounts[0]).then(data => props.setUser(data))
+  })
 )
