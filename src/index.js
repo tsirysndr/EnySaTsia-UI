@@ -22,6 +22,8 @@ import { withContext } from 'recompose'
 import PropTypes from 'prop-types'
 import Home from './Containers/Home'
 import NewQuestion from './Containers/NewQuestion'
+import Profile from './Containers/Profile'
+import Settings from './Containers/Settings'
 
 require('typeface-montserrat')
 
@@ -58,6 +60,8 @@ ReactDOM.render(
           <Switch>
             <Route exact path='/' component={Home} />
             <Route path='/post' component={NewQuestion} />
+            <Route path='/profile' component={Profile} />
+            <Route path='/settings' component={Settings} />
           </Switch>
         </HashRouter>
       </ThemeProvider>
