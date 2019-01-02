@@ -55,7 +55,7 @@ const Navbar = (props) => (
         onClose={props.handleClose}
         style={{ top: 50 }}
       >
-        <MenuItem onClick={() => props.history.push('/profile')}>
+        <MenuItem onClick={() => { props.handleClose(); props.history.push('/profile')}}>
           <ListItemIcon>
             <AccountCircle />
           </ListItemIcon>
@@ -63,7 +63,7 @@ const Navbar = (props) => (
             Profil
           </Typography>
         </MenuItem>
-        <MenuItem onClick={() => props.history.push('/settings')}>
+        <MenuItem onClick={() => { props.handleClose(); props.history.push('/settings') }}>
           <ListItemIcon>
             <Settings />
           </ListItemIcon>
