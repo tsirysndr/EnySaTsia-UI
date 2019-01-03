@@ -10,6 +10,7 @@ import PropTypes from 'prop-types'
 import { withLoading, withQuestion } from './Enhancers/NewQuestionEnhancer'
 import Spinner from 'react-md-spinner'
 import base64 from 'base64-js'
+import { drizzleConnect as connect } from 'drizzle-react'
 
 const a = base64.fromByteArray(Buffer.from(avatar('tsiry'), 'utf8'))
 const avatarIcon = `data:image/svg+xml;base64,${a}`
@@ -38,9 +39,9 @@ const NewQuestion = (props) => (
                   <img style={{ width: 56, height: 56, borderRadius: 28 }} alt='' src={avatarIcon} />
                 </div>
                 <div style={{ display: 'flex' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 10 }}>
-                    <span style={{ fontWeight: 500 }}>Tsiry Sandratraina</span>
-                    <span style={{ color: '#657786', fontSize: 15 }}>@tsiry</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', marginLeft: 10 }}>
+                    <span style={{ fontWeight: 500 }}>{props.profile.name}</span>
+                    {props.profile.username != null && <span style={{ color: '#657786', fontSize: 15 }}>@{props.profile.username}</span>}
                   </div>
                 </div>
               </div>
@@ -65,4 +66,15 @@ const withData = compose(
   withQuestion,
 )
 
-export default withData(NewQuestion)
+const mapStateToProps = (state) => {
+  return {
+    profile: state.session.profile
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  }
+}
+
+export default connect(withData(NewQuestion), mapStateToProps, mapDispatchToProps)

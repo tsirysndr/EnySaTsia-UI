@@ -3,6 +3,20 @@ import {
 } from 'recompose'
 import Box from '3box'
 
+async function loadProfile(props, Box, web3) {
+  try {
+    const user = await Box.getProfile(props.accounts[0])
+    const box = await Box.openBox(props.accounts[0], web3.currentProvider)
+    console.log('box: ', box)
+    props.setLoggedIn(true)
+    props.setProfile(user)
+    props.history.push('/')
+  } catch (e) {
+    console.log('error: ', e)
+    props.history.goBack()
+  }
+}
+
 export const withLogin = withPropsOnChange(['drizzle'], props => {
   if (!window.ethereum) {
     return
@@ -15,11 +29,7 @@ export const withLogin = withPropsOnChange(['drizzle'], props => {
         if (err) {
           return
         }
-        Box.getProfile(props.accounts[0]).then(user => {
-          console.log('user: ', user)
-          props.setLoggedIn(true)
-          props.history.push('/')
-        }).catch(e => console.log('error: ', e))
+        loadProfile(props, Box, web3)
       })
     })
     .catch(e => console.error(e))

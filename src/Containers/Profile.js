@@ -4,7 +4,7 @@ import { Container } from 'reactstrap'
 import avatar from 'gradient-avatar'
 import ContentLoader from 'react-content-loader'
 import { compose, getContext } from 'recompose'
-import { withAddress, withUser } from './Enhancers/ProfileEnhancer'
+import { withAddress, withUser, withLoading } from './Enhancers/ProfileEnhancer'
 import PropTypes from 'prop-types'
 import base64 from 'base64-js'
 import { drizzleConnect as connect } from 'drizzle-react'
@@ -17,21 +17,43 @@ const Profile = (props) => (
     <Navbar />
     <Container style={{ marginTop: 67 }}>
       <div style={{ display: 'flex' }}>
-        <div style={{ flex: 0.4 }}>
-          <div style={{ marginTop: 50, display: 'flex', justifyContent: 'center' }}>
-            <img style={{ width: 130, height: 130, borderRadius: 65 }} alt='' src={avatarIcon} />
-          </div>
-          <div style={{ marginTop: 34 }}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <h4>{props.user.name}</h4>
+        {
+          props.loading && (
+            <div style={{ flex: 0.4 }}>
+              <ContentLoader 
+                rtl
+                height={475}
+                width={400}
+                speed={2}
+                primaryColor="#f3f3f3"
+                secondaryColor="#ecebeb"
+              >
+                <circle cx="200" cy="140" r="80" /> 
+                <rect x="60" y="270" rx="5" ry="5" width="275.13" height="24" /> 
+                <rect x="135" y="315" rx="5" ry="5" width="128" height="17" />
+              </ContentLoader>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <div style={{ width: 150, textOverflow: 'ellipsis', overflow: 'hidden' }}>
-                <span style={{ color: '#a0a0a0' }}>{props.address}</span>
+          )
+        }
+        {
+          !props.loading && (
+            <div style={{ flex: 0.4 }}>
+              <div style={{ marginTop: 50, display: 'flex', justifyContent: 'center' }}>
+                <img style={{ width: 130, height: 130, borderRadius: 65 }} alt='' src={avatarIcon} />
+              </div>
+              <div style={{ marginTop: 34 }}>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <h4>{props.user.name}</h4>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <div style={{ width: 150, textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                    <span style={{ color: '#a0a0a0' }}>{props.address}</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          )
+        }
         <div style={{ flex: 1 }}>
           <div style={{ marginTop: 20 }}>
           <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
@@ -100,6 +122,7 @@ const withDrizzle = getContext({
 const withData = compose(
   withDrizzle,
   withAddress,
+  withLoading,
   withUser,
 )
 

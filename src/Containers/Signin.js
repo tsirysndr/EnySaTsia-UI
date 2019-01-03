@@ -31,7 +31,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setLoggedIn: (value) => dispatch(SessionActions.setLoggedIn(value))
+    setLoggedIn: (value) => dispatch(SessionActions.setLoggedIn(value)),
+    setProfile: (value) => dispatch(SessionActions.setProfile(value)),
   }
 }
 

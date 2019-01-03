@@ -5,6 +5,8 @@ import {
 } from 'recompose'
 import Box from '3box'
 
+export const withLoading = withState('loading', 'setLoading', true)
+
 export const withAddress = withPropsOnChange(
   ['accounts'],
   props => ({
@@ -13,8 +15,11 @@ export const withAddress = withPropsOnChange(
 )
 
 export const withUser = compose(
-  withState('user', 'setUser', ''),
+  withState('user', 'setUser', {}),
   withPropsOnChange(['accounts'], props => {
-    Box.getProfile(props.accounts[0]).then(data => props.setUser(data))
+    Box.getProfile(props.accounts[0]).then(data => {
+      props.setUser(data)
+      props.setLoading(false)
+    })
   })
 )
